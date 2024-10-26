@@ -1,0 +1,102 @@
+
+        
+        pipeline  Pipeline {
+
+Extractor
+            ->  TextFileInterpreter
+                    -> CSVInterpreter
+
+                            ->  TableInterpreter
+
+
+                                                        -> 
+                                                              Loader;
+    
+
+
+    block           
+     TextFileInterpreter 
+
+     oftype 
+    TextFileInterpreter 
+    
+    {
+
+
+
+    }
+
+                                            block  CSVInterpreter 
+                                            oftype CSVInterpreter {
+
+
+                    
+                    delimiter:";"
+                    ;
+
+
+        
+        }
+
+    block  Extractor
+    
+     oftype          
+                                    HttpExtractor 
+    {
+
+
+           
+           url:"https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv"
+           ;
+
+    
+    
+    }
+
+    block            TableInterpreter
+     oftype TableInterpreter 
+     
+     {
+                          header: false;
+            columns:[
+
+
+            "Lfd. Nummer" oftype integer,
+
+
+            "Name des Flughafens" oftype text,
+
+            "Ort" oftype text,
+
+
+            "Land" oftype text,
+
+            "IATA" oftype text,
+            "ICAO" oftype text,
+
+            "Latitude" oftype decimal,
+
+
+            "Longitude" oftype decimal,
+
+                    
+                    "Altitude" oftype integer
+        ];
+    } 
+    
+    
+    
+     block  Loader oftype SQLiteLoader {
+
+
+
+
+        table: "airports";
+
+        file: "./airports.sqlite";
+
+
+
+                                                    }
+
+                                                                    }
