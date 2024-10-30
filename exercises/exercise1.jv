@@ -1,102 +1,44 @@
+pipeline Pipeline {
 
-        
-        pipeline  Pipeline {
+    Extractor 
+        -> TextFileInterpreter
+            -> CSVInterpreter
+                -> TableInterpreter
+                    -> Loader;
 
-Extractor
-            ->  TextFileInterpreter
-                    -> CSVInterpreter
-
-                            ->  TableInterpreter
-
-
-                                                        -> 
-                                                              Loader;
-    
-
-
-    block           
-     TextFileInterpreter 
-
-     oftype 
-    TextFileInterpreter 
-    
-    {
-
-
-
+    block Extractor oftype HttpExtractor {
+        url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv";
     }
 
-                                            block  CSVInterpreter 
-                                            oftype CSVInterpreter {
+                block TextFileInterpreter oftype TextFileInterpreter {
 
+                        // Configure TextFileInterpreter properties here
+                }
 
-                    
-                    delimiter:";"
-                    ;
+                                block CSVInterpreter oftype CSVInterpreter {
 
+                                        delimiter: ";";
+                                }
 
-        
-        }
+                                                        block TableInterpreter oftype TableInterpreter {
+                                                                header: false;
+                                                                columns: [
+                                                                "Lfd. Nummer" oftype integer,
+                                                                "Name des Flughafens" oftype text,
 
-    block  Extractor
-    
-     oftype          
-                                    HttpExtractor 
-    {
+                                                                "Ort" oftype text,
+                                                                "Land" oftype text,
+                                                                "IATA" oftype text,
+                                                                
+                                                                "ICAO" oftype text,
+                                                                "Latitude" oftype decimal,
+                                                                "Longitude" oftype decimal,
+                                                                "Altitude" oftype integer
+                                                                ];
+                                                        }
 
-
-           
-           url:"https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv"
-           ;
-
-    
-    
-    }
-
-    block            TableInterpreter
-     oftype TableInterpreter 
-     
-     {
-                          header: false;
-            columns:[
-
-
-            "Lfd. Nummer" oftype integer,
-
-
-            "Name des Flughafens" oftype text,
-
-            "Ort" oftype text,
-
-
-            "Land" oftype text,
-
-            "IATA" oftype text,
-            "ICAO" oftype text,
-
-            "Latitude" oftype decimal,
-
-
-            "Longitude" oftype decimal,
-
-                    
-                    "Altitude" oftype integer
-        ];
-    } 
-    
-    
-    
-     block  Loader oftype SQLiteLoader {
-
-
-
-
-        table: "airports";
-
-        file: "./airports.sqlite";
-
-
-
-                                                    }
-
-                                                                    }
+                                                                                        block Loader oftype SQLiteLoader {
+                                                                                                table: "airports";
+                                                                                                file: "./airports.sqlite";
+                                                                                        }
+}
