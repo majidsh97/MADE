@@ -1,4 +1,5 @@
-pipeline Pipeline {
+pipeline
+Pipeline {
 
     Extractor 
         -> TextFileInterpreter
