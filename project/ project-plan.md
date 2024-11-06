@@ -15,12 +15,12 @@ This project explores trends in international student demographics, aiming to de
 ## Datasources
 
 - **Datasource 1: International Students in Canada**
-    - **Metadata URL**: [https://www.kaggle.com/datasets/syedabdulshameer/international-students-in-canada](https://www.kaggle.com/datasets/syedabdulshameer/international-students-in-canada)
+    - **Data URL**: [https://www.kaggle.com/datasets/syedabdulshameer/international-students-in-canada](https://www.kaggle.com/datasets/syedabdulshameer/international-students-in-canada)
     - **Data Type**: CSV
     - **Description**: Contains data on international students in Canada, with details on enrollment numbers by country and year.
 
 - **Datasource 2: International Student Demographics**
-    - **Metadata URL**: [https://www.kaggle.com/datasets/webdevbadger/international-student-demographics](https://www.kaggle.com/datasets/webdevbadger/international-student-demographics)
+    - **Data URL**: [https://www.kaggle.com/datasets/webdevbadger/international-student-demographics](https://www.kaggle.com/datasets/webdevbadger/international-student-demographics)
     - **Data Type**: CSV
     - **Description**: Contains demographic information on international students globally, including data on students in the USA and other popular destinations.
 
