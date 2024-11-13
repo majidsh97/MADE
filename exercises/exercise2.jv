@@ -43,7 +43,6 @@ valuetype GeoPattern oftype text {
     }
     constraint IDGeoPattern oftype RegexConstraint {
             regex: /^\d{1,3}\.\d+, \d{1,3}\.\d+$/;
-
         }
 
 valuetype  Stadtteil oftype text {
