@@ -1,0 +1,7 @@
+[urls]
+canada = "syedabdulshameer/international-students-in-canada"
+us = "webdevbadger/international-student-demographics"
+
+
+[paths]
+data_path= '/home/cip/ce/ix05ogym/Majid/MADE/data/'

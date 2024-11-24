@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "made"
+version = "0.0.1"
+description = "made project"
+authors = ["majidsh97 <sharghi.majid@gmail.com>"]
+readme = "README.md"
+
+packages = [
+    { include = "project", from = "." }
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
