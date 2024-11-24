@@ -1,123 +1,64 @@
 import pandas as pd
-from pathlib import Path
-import sys
-import os
-sys.path.append(os.getcwd())
-#import pandasql as psql
-#from project.Extract_Transform import extract
+from project.config import settings
 
 class Transform:
-    def __init__(self, data_path):
-        self.data_path = data_path
-        dtype = {
-            'Country': 'str', 
-            'Code' : 'str',
-            'Year' : 'int',
-            'CO2 emission (Tons)' : 'float64',
-            'Population(2022)' : 'float64',
-            'Area' : 'float64',
-            '% of World' : 'str',
-            'Density(km2)' : 'str',
-            'Disaster Type': 'str',
-            'Source': 'str',
-            'CTS_Code': 'str',
-            'CTS_Name': 'str',
-            'F1980': 'float64',
-            'F1981': 'float64',
-            'F1982': 'float64',
-            'F1983': 'float64',
-            'F1984': 'float64',
-            'F1985': 'float64',
-            'F1986': 'float64',
-            'F1987': 'float64',
-            'F1988': 'float64',
-            'F1989': 'float64',
-            'F1990': 'float64',
-            'F1991': 'float64',
-            'F1992': 'float64',
-            'F1993': 'float64',
-            'F1994': 'float64',
-            'F1995': 'float64',
-            'F1996': 'float64',
-            'F1997': 'float64',
-            'F1998': 'float64',
-            'F1999': 'float64',
-            'F2000': 'float64',
-            'F2001': 'float64',
-            'F2002': 'float64',
-            'F2003': 'float64',
-            'F2004': 'float64',
-            'F2005': 'float64',
-            'F2006': 'float64',
-            'F2007': 'float64',
-            'F2008': 'float64',
-            'F2009': 'float64',
-            'F2010': 'float64',
-            'F2011': 'float64',
-            'F2012': 'float64',
-            'F2013': 'float64',
-            'F2014': 'float64',
-            'F2015': 'float64',
-            'F2016': 'float64',
-            'F2017': 'float64',
-            'F2018': 'float64',
-            'F2019': 'float64',
-            'F2020': 'float64',
-            'F2021': 'float64',
-            'F2022': 'float64'
-        }
-        self.df = pd.read_csv(data_path, encoding='latin1', dtype=dtype)
-
-    def clean_data(self):
-        self.df.dropna(how='all', inplace=True)
-        self.df.drop_duplicates(inplace=True)
-    
-    def process_density_column(self):
-        #Convert the column to string if it's not already
-        self.df['Density(km2)'] = self.df['Density(km2)'].astype(str)
+    def __init__(self,df):
         
-        self.df['Density(km2)'] = (
-            self.df['Density(km2)']
-            .str.extract('(\d+)')   # Extract numeric part (if any)
-            .fillna(0)              # Replace NaN with 0 (or a suitable value)
-            .astype(int)            # Convert to integer
-        )
-    
-    def fill_missing_values(self):
-        columns_to_fill = ['F1980', 'F1981', 'F1982', 'F1983', 'F1984', 'F1985', 'F1986', 'F1987', 'F1988', 'F1989', 'F1990', 
-                           'F1991', 'F1992', 'F1993', 'F1994', 'F1995', 'F1996', 'F1997', 'F1998', 'F1999', 'F2000', 'F2001', 
-                           'F2002', 'F2003', 'F2004', 'F2005', 'F2006', 'F2007', 'F2008', 'F2009', 'F2010', 'F2011', 'F2012', 
-                           'F2013', 'F2014', 'F2015', 'F2016', 'F2017', 'F2018', 'F2019', 'F2020', 'F2021', 'F2022']
-        self.df[columns_to_fill] = self.df[columns_to_fill].fillna(0)
-    
+        self.Internation_students_canada = df['Internation_students_Canada']
+        self.Internation_students_us = df['origin']
 
 
-    def rename_columns(self):
-        self.df = self.df.rename(columns={'Country_x': 'Country', 'Ã¯Â»Â¿ObjectId': 'ObjectId', 'Indicator': 'Disaster Type'})
-        self.df['Disaster Type'] = self.df['Disaster Type'].astype(str).str.replace(
-            'Climate related disasters frequency, Number of Disasters:', '', regex=False)
-        self.df = self.df.rename(columns={'CO2 emission (Tons)': 'CO2_Emission'})
         
-    
-    def filter_data(self):
-        self.df.dropna(subset=['Year'], inplace=True)
-        self.df['Year'] = self.df['Year'].astype(int)
-        self.df = self.df.sort_values(by='Year', ascending=False)
-        self.df = self.df[self.df['Year'] >= 1980]
-        #self.df.drop(self.df[self.df['Disaster_Type'] == 'TOTAL'].index,inplace=True)
-    
-    
-    
-    def save_transformed_data(self, output_path):
-        self.df.to_csv(output_path, index=False)
-    
     def transform(self, output_path):
-        self.clean_data()
-        self.process_density_column()
-        self.fill_missing_values()
-        self.rename_columns()
-        #self.drop_unnecessary_columns()
-        self.filter_data()
+        """
+        This function takes in the raw dataframes and transforms them into a single clean dataframe.
         
-        self.save_transformed_data(output_path)
+        The steps are as follows:
+        1. Group the USA data by country and year, and sum the students.
+        2. Rename the columns of the Canada data.
+        3. Merge the USA and Canada dataframes on the country column.
+        4. Cast the year column to string and the students column to float.
+        5. Filter the dataframe to only include the years 2015-2022.
+        6. Drop any rows with null values.
+        7. Fill any remaining null values with 0.
+        8. Save the dataframe to a csv file.
+        
+        Returns:
+            The transformed dataframe.
+        
+        """
+        # groupby and rename
+
+        self.Internation_students_us =self.Internation_students_us.groupby(['origin','year']).agg({'students': 'sum'}).reset_index()
+        self.Internation_students_us['year'] = self.Internation_students_us['year'].str.split('/').str[0]
+        self.Internation_students_us = self.Internation_students_us.pivot(index='origin', columns='year', values='students').fillna(0)
+
+        #rename_columns
+        self.Internation_students_canada.rename(columns={'Country of Citizenship':'origin'}, inplace=True)
+        
+        #merge
+        merged_table = pd.merge(self.Internation_students_us, self.Internation_students_canada, on='origin', how='inner', suffixes=('_US', '_Canada'))
+        
+        #dtype
+        merged_table.iloc[:, 0] = merged_table.iloc[:, 0].astype('str')
+        merged_table.iloc[:, 1:] = merged_table.iloc[:, 1:].astype('float64')
+        
+        #filter_data
+        merged_table = merged_table[['origin',
+                                    '2015_US','2016_US', '2017_US', '2018_US', '2019_US', '2020_US', '2021_US', '2022_US',
+                                    '2015_Canada','2016_Canada', '2017_Canada', '2018_Canada', '2019_Canada','2020_Canada', '2021_Canada', '2022_Canada']]
+
+        #drop if nan
+        if  merged_table.isna().any().any():
+            merged_table.dropna(inplace=True)
+            pass
+        
+        #fill null
+        if merged_table.isnull().any().any():
+           merged_table = merged_table.fillna(0)
+        
+        #save
+        merged_table.to_csv(output_path)
         print("Data transformation complete.")
+        
+        return merged_table

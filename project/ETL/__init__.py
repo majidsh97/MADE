@@ -1,3 +1,3 @@
 from .extract import Extract
-from .transform import DataTransformer
+from .transform import Transform
 from .load import Load  
