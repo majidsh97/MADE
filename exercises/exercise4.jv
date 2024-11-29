@@ -34,7 +34,7 @@ pipeline TemperaturesPipeline {
 
     // Select only necessary columns (Geraet, Hersteller, Model, Monat, Temperatur in °C (DWD), Batterietemperatur in °C)
     block TempSelectRange oftype CellRangeSelector {
-        select: range A1:F*;  // Ensure we select the relevant columns based on your description
+        select: range A1:K*;  // Ensure we select the relevant columns based on your description
     }
 
     // Rename columns to English
@@ -46,7 +46,7 @@ pipeline TemperaturesPipeline {
     // Transform "Batterietemperatur in °C" to "battery_temperature"
     block RenameBatteryTemperature oftype CellWriter {
         write: ["battery_temperature"];
-        at: cell F1;
+        at: cell J1;
     }
 
     // Define the table structure and column types
