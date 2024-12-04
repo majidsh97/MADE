@@ -4,7 +4,7 @@ from os.path import join
 import pandas as pd
 from project.ETL import Extract,Load,Transform
 
-def Pipeline():
+def pipeline():
 
     """
     The main entry point for the pipeline. This function performs the following steps
@@ -33,7 +33,7 @@ def Pipeline():
 
 
 if __name__ == '__main__':
-    Pipeline()
+    pipeline()
 
 
        
