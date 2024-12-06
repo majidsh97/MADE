@@ -10,8 +10,6 @@ pyobjc-framework-Cocoa==10.3.2
 pytest==7.4.0
 scikit-learn==1.4.2
 seaborn==0.12.2
-# Editable install with no version control (setuptools==68.2.2)
--e /local/python3.11-Anaconda3-2024.03-RSU-VI/lib/python3.11/site-packages/setuptools-68.2.2-py3.11.egg-info
 SQLAlchemy==2.0.25
 standard-distutils==3.11.9
 umap-learn==0.5.6
