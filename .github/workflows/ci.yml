@@ -39,16 +39,4 @@ jobs:
         run: |
           chmod +x ./project/tests.sh
           ./project/tests.sh
-        env:
-          # Use GitHub secrets to handle private keys, tokens, or sensitive information
-          API_KEY: ${{ secrets.API_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
-      # Optional: Cache dependencies to improve performance
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+        
