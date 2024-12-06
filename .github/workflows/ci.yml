@@ -20,11 +20,11 @@ jobs:
         with:
           python-version: '3.9'
 
-     - name: Print Full Path
+      - name: Print Full Path
         run: |
           echo "Full path to requirements.txt: $GITHUB_WORKSPACE/requirements.txt"
           ls -l $GITHUB_WORKSPACE/requirements.txt
-          
+
       # Install dependencies
       - name: Install dependencies
         run: |
