@@ -37,7 +37,7 @@ jobs:
       # Run the tests.sh script
       - name: Run Tests
         run: |
-          chmod +x tests.sh
+          chmod +x ./project/tests.sh
           ./project/tests.sh
         env:
           # Use GitHub secrets to handle private keys, tokens, or sensitive information
