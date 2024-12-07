@@ -1,0 +1,69 @@
+pipeline energie{
+    block extractdata1 oftype HttpExtractor{
+        url:"https://gtfs.rhoenenergie-bus.de/GTFS.zip";
+        
+    }
+
+    block extractdata2 oftype ArchiveInterpreter{
+        archiveType:"zip";
+    }
+
+    block picktxt oftype FilePicker{
+        path:"/stops.txt";
+    }
+    block ReadTextFile oftype TextFileInterpreter{
+        encoding:"utf8";
+    }
+    block ReadCSVFile oftype CSVInterpreter{
+        enclosing: '"';
+        enclosingEscape: '"';
+    }
+    //making the table as per assignment requirement
+    block MakeTable oftype TableInterpreter{
+        header: true;
+        columns:[
+            "stop_id" oftype integer, 
+            "stop_name" oftype text, 
+            "stop_lat" oftype LongitudeLatitude, 
+            "stop_lon" oftype LongitudeLatitude, 
+            "zone_id" oftype zone_1925
+        ];
+    }
+
+    valuetype zone_1925 oftype integer{
+        constraints: [
+            zone
+        ];
+    }
+    constraint zone oftype RangeConstraint{
+        lowerBound: 1925;
+        upperBound: 1925;
+
+    }
+    valuetype LongitudeLatitude oftype decimal{
+        constraints: [
+            coordinates
+        ];
+    }
+    constraint coordinates oftype RangeConstraint{
+        lowerBound: -90;
+        lowerBoundInclusive: true;
+        upperBound: 90;
+        upperBoundInclusive: true;
+    }
+    block table_to_SQLite oftype SQLiteLoader{
+        table: "stops";
+        file: "./gtfs.sqlite";
+    }
+
+    extractdata1
+    -> extractdata2
+    -> picktxt
+    -> ReadTextFile
+    -> ReadCSVFile
+    -> MakeTable
+    -> table_to_SQLite;
+
+
+
+}
