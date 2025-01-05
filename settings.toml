@@ -4,7 +4,7 @@ us = "webdevbadger/international-student-demographics"
 
 
 [paths]
-data_path= './data/'
+data_path= 'data'
 output_table_name = "international_students_north_america"
 
 

@@ -57,5 +57,17 @@ def test_sqlite_table(run_pipeline,sqlite_connection):
     cursor.execute(f"SELECT * FROM {run_pipeline['output_table_name']}")
     df = pd.DataFrame(cursor.fetchall(), columns=cursor.description)
     assert len(df) > 0
+    
+
+def test_sqlite_load(run_pipeline):
+    from project.ETL.load import Load
+    data_path = run_pipeline["data_path"]
+    table_name = run_pipeline["output_table_name"]
+    db_path = run_pipeline["output_db_path"]
+    load = Load(db_path)
+    df = load.load_from_sqlite(table_name)
+    assert len(df) > 0
+
+    
 
 
